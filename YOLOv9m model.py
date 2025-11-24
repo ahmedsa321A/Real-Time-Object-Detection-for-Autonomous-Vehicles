@@ -15,7 +15,6 @@ def on_fit_epoch_end(trainer):
     elapsed = getattr(trainer, 'epoch_time', 1) or 1
     fps = num_samples / elapsed
 
-    # Corrected the epoch counter to use 'epoch' instead of 'epoch+1'
     print(f"✅ Epoch [{epoch+1}/{total_epochs}] | "
           f"🎯 mAP@0.5: {mAP50:.4f} | "
           f"📉 Train Loss: {loss:.4f} | "
@@ -25,7 +24,6 @@ model = YOLO('yolov9m.pt')
 
 model.add_callback("on_fit_epoch_end", on_fit_epoch_end)
 
-# STAGE 1
 model.train(
     data="/kaggle/input/bdd100k-yolo10-yaml/bdd100k_ultralytics.yaml",
     epochs=20,
@@ -57,3 +55,4 @@ model.train(
     patience=10
 
 )
+
