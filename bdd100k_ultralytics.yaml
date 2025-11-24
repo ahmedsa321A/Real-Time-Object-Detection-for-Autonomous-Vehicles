@@ -1,0 +1,24 @@
+names:
+- area/unknown
+- bike
+- bus
+- car
+- lane/crosswalk
+- lane/double other
+- lane/double white
+- lane/double yellow
+- lane/single other
+- lane/single white
+- lane/single yellow
+- motor
+- person
+- rider
+- traffic light
+- traffic sign
+- train
+- truck
+nc: 18
+path: /kaggle/input/bd100k-yolo-conveted/dataset_yolo_converted
+test: images/test
+train: images/train
+val: images/val
