@@ -6,6 +6,7 @@ def on_fit_epoch_end(trainer):
     
     mAP50 = trainer.metrics.get('metrics/mAP50(B)', 0) 
     
+    # Training losses are available here as well
     box_loss = trainer.metrics.get('train/box_loss', 0)
     cls_loss = trainer.metrics.get('train/cls_loss', 0)
     dfl_loss = trainer.metrics.get('train/dfl_loss', 0)
@@ -20,12 +21,12 @@ def on_fit_epoch_end(trainer):
           f"📉 Train Loss: {loss:.4f} | "
           f"⚡ FPS: {fps:.2f}")
 
-model = YOLO('yolov9m.pt')
+model = YOLO('/kaggle/input/pt-from-epoch-2/last.pt')
 
 model.add_callback("on_fit_epoch_end", on_fit_epoch_end)
 
 model.train(
-    data="/kaggle/input/bdd100k-yolo10-yaml/bdd100k_ultralytics.yaml",
+    data="/kaggle/working/bdd100k_ultralytics.yaml",
     epochs=20,
     imgsz=640,
     batch=16,
@@ -52,7 +53,18 @@ model.train(
     translate=0.1,
     scale=0.5,
     shear=0.2,
-    patience=10
-
+    patience=10,
+    resume=True
 )
+from ultralytics import YOLO
 
+model = YOLO('/kaggle/input/lastpt/last.pt')
+metrics = model.val(
+    data="/kaggle/working/bdd100k_ultralytics.yaml",
+    split="test",  # explicitly evaluate on the test set
+    imgsz=640,
+    batch=16,
+    device=0,
+    save_json=True,  
+    save_hybrid=False
+)
